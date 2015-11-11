@@ -1,0 +1,22 @@
+{
+  "name": "made-script",
+  "version": "0.1.0",
+  "description": "compile module entry script file",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./test/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simonhao/made-script.git"
+  },
+  "keywords": [
+    "compile"
+  ],
+  "author": "simonhao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/simonhao/made-script/issues"
+  },
+  "homepage": "https://github.com/simonhao/made-script#readme"
+}

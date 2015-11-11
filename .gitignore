@@ -1,0 +1,9 @@
+*.sublime-project
+*.sublime-workspace
+
+.DS_Store
+
+/node_modules
+
+/test/dist
+/test/node_modules
