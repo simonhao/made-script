@@ -48,7 +48,7 @@ module.exports = function(filename, options, transform){
 
           return __transform(transform[node.callee.name](node.arguments.map(function(node){
             return node.value
-          })));
+          }), sid, options));
         }
       }
     }
