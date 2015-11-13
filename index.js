@@ -17,7 +17,8 @@ module.exports = function(filename, options, transform){
   var options = extend({
     basedir: '/',
     entry: 'index.js',
-    ext: '.js'
+    ext: '.js',
+    filename: filename
   }, options);
 
   var transform = transform || {};
