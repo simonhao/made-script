@@ -1,6 +1,6 @@
 {
   "name": "made-script",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "compile module entry script file",
   "main": "index.js",
   "scripts": {
@@ -24,6 +24,6 @@
     "esprima": "^2.7.0",
     "estraverse": "^4.1.1",
     "extend": "^3.0.0",
-    "made-id": "^0.2.1"
+    "made-id": "^0.2.2"
   }
 }
