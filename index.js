@@ -43,7 +43,7 @@ module.exports = function(filename, options, transform){
 
           return __id(sid, node.arguments[0].value);
         }else if(node.callee.name === '__instance'){
-
+          //TODO __instance还要识别没有参数的类型
           return __instance(sid, node.arguments[0].value);
         }else if(node.callee.name in transform){
 
