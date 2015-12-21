@@ -23,6 +23,6 @@ var id = __id('id');
 
 var module_id = __module_id;
 
-var instance = __instance('instance');
+var instance = __instance('');
 
 var src = __src('static/image');

@@ -129,49 +129,55 @@ function __id(sid, name){
 }
 
 function __instance(sid, name){
-  return {
+  var ast = {
     "type": "BinaryExpression",
     "operator": "+",
     "left": {
-      "type": "BinaryExpression",
-      "operator": "+",
-      "left": {
-        "type": "Literal",
-        "value": (sid ? sid + '-' : ''),
-        "raw": "'" + (sid ? sid + '-' : '') + "'"
-      },
-      "right": {
-        "type": "ConditionalExpression",
-        "test": {
-          "type": "Identifier",
-          "name": "instance"
-        },
-        "consequent": {
-          "type": "BinaryExpression",
-          "operator": "+",
-          "left": {
-            "type": "Identifier",
-            "name": "instance"
-          },
-          "right": {
-            "type": "Literal",
-            "value": "-",
-            "raw": "'-'"
-          }
-        },
-        "alternate": {
-          "type": "Literal",
-          "value": "",
-          "raw": "''"
-        }
-      }
+      "type": "Literal",
+      "value": sid,
+      "raw": "'" + sid + "'"
     },
     "right": {
-      "type": "Literal",
-      "value": name,
-      "raw": "'" + name + "'"
+      "type": "ConditionalExpression",
+      "test": {
+        "type": "Identifier",
+        "name": "instance"
+      },
+      "consequent": {
+        "type": "BinaryExpression",
+        "operator": "+",
+        "left": {
+          "type": "Literal",
+          "value": "-",
+          "raw": "'-'"
+        },
+        "right": {
+          "type": "Identifier",
+          "name": "instance"
+        }
+      },
+      "alternate": {
+        "type": "Literal",
+        "value": "",
+        "raw": "''"
+      }
     }
   };
+
+  if(name){
+    return {
+      "type": "BinaryExpression",
+      "operator": "+",
+      "left": ast,
+      "right":{
+        "type": "Literal",
+        "value": '-' + name,
+        "raw": "'" + "-" + name + "'"
+      }
+    }
+  }else{
+    return ast;
+  }
 }
 
 function __transform(result){
