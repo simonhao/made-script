@@ -9,7 +9,7 @@
 var net = require('base/net');
 var extend = require('base/extend');
 var tool = require('comm/tool');
-
+var template = require('list.tpl');
 
 extend();
 

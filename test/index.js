@@ -8,11 +8,22 @@
 
 var ScriptPack = require('../lib/pack');
 var pack_script = require('../index.js');
+var view = require('made-view');
 var fs = require('fs');
 
 var func = {
   __src: function(args, options){
     return args[0] + 'this is transform';
+  }
+};
+
+var transform = {
+  tpl: function(filename){
+    return 'module.exports=' + view.compile_client_file(filename, {
+      basedir: __dirname,
+      entry: 'view.tpl',
+      ext: '.tpl'
+    });
   }
 };
 
@@ -29,6 +40,7 @@ var bundle = pack_script({
   basedir: __dirname,
   require: ['code'],
   func: func,
+  transform: transform,
   external: ['base/net', 'base/query', 'base/extend']
 });
 
