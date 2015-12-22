@@ -6,19 +6,48 @@
 
 'use strict';
 
+var ScriptPack = require('../lib/pack');
+var pack_script = require('../index.js');
 var fs = require('fs');
-var compiler = require('../index.js');
 
-var filename = __dirname + '/code.js';
-var options = {
-  basedir: __dirname,
-};
-
-var transform = {
-  __src: function(args){
-    return 'this will replace by path:' + args.join(',');
+var func = {
+  __src: function(args, options){
+    return args[0] + 'this is transform';
   }
 };
 
-console.log(compiler(filename, options, transform));
+var comm = pack_script({
+  basedir: __dirname,
+  add: ['comm/fetch', 'instance'],
+  require: ['base/net', 'base/query', 'base/extend']
+});
 
+fs.writeFileSync(__dirname + '/comm.js', comm);
+
+
+var bundle = pack_script({
+  basedir: __dirname,
+  require: ['code'],
+  func: func,
+  external: ['base/net', 'base/query', 'base/extend']
+});
+
+fs.writeFileSync(__dirname + '/bundle.js', bundle);
+
+/*var comm = new ScriptPack({
+  basedir: __dirname
+});
+
+comm.add(['comm/fetch', 'instance']);
+comm.require(['base/net', 'base/query', 'base/extend']);
+
+fs.writeFileSync(__dirname + '/comm.js', comm.bundle());
+
+var bundle = new ScriptPack({
+  basedir: __dirname
+});
+
+bundle.require(['code']);
+bundle.external(['base/net', 'base/query', 'base/extend']);
+
+fs.writeFileSync(__dirname + '/bundle.js', bundle.bundle());*/

@@ -1,98 +1,85 @@
 /**
  * Made-Script
  * @author: SimonHao
- * @date:   2015-11-11 14:06:44
+ * @date:   2015-12-22 17:23:52
  */
 
 'use strict';
 
-var esprima    = require('esprima');
-var estraverse = require('estraverse');
-var escodegen  = require('escodegen');
+var ScriptPack = require('./lib/pack');
 var mid        = require('made-id');
 var extend     = require('extend');
-var fs         = require('fs');
 
-module.exports = function(filename, options, transform){
-  var options = extend({
-    basedir: '/',
-    entry: 'index.js',
-    ext: '.js',
-    filename: filename
-  }, options);
+var default_func = {
+  __class: function(args, options){
+    var name = args[0];
+    var sid = options.sid;
 
-  var transform = transform || {};
+    return {
+      "type": "Literal",
+      "value": '.' + (sid ? sid + '-' : '') + name,
+      "raw": "'." + (sid ? sid + '-' : '') + name + "'"
+    };
+  },
+  __id: function(args, options){
+    var name = args[0];
+    var sid = options.sid;
 
-  var id  = mid.id(filename, options);
-  var sid = mid.sid(filename, options);
-
-  var str = fs.readFileSync(filename, 'utf-8');
-  var ast = esprima.parse(str, {
-    attachComment: true
-  });
-
-  var result = estraverse.replace(ast, {
-    leave: function(node, parent){
-      if(node.type === 'Identifier' && node.name === '__module_id'){
-        return __module_id(id);
-      }else if(node.type === 'CallExpression' && node.callee.type === 'Identifier'){
-        if(node.callee.name === '__class'){
-
-          return __class(sid, node.arguments[0].value);
-        }else if(node.callee.name === '__id'){
-
-          return __id(sid, node.arguments[0].value);
-        }else if(node.callee.name === '__instance'){
-          //TODO __instance还要识别没有参数的类型
-          return __instance(sid, node.arguments[0].value);
-        }else if(node.callee.name in transform){
-
-          return __transform(transform[node.callee.name](node.arguments.map(function(node){
-            return node.value
-          }), sid, options));
+    return {
+      "type": "BinaryExpression",
+      "operator": "+",
+      "left": {
+        "type": "BinaryExpression",
+        "operator": "+",
+        "left": {
+          "type": "Literal",
+          "value": '#' + (sid ? sid + '-' : ''),
+          "raw": "'#" + (sid ? sid + '-' : '') + "'"
+        },
+        "right": {
+          "type": "ConditionalExpression",
+          "test": {
+            "type": "Identifier",
+            "name": "instance"
+          },
+          "consequent": {
+            "type": "BinaryExpression",
+            "operator": "+",
+            "left": {
+              "type": "Identifier",
+              "name": "instance"
+            },
+            "right": {
+              "type": "Literal",
+              "value": "-",
+              "raw": "'-'"
+            }
+          },
+          "alternate": {
+            "type": "Literal",
+            "value": "",
+            "raw": "''"
+          }
         }
+      },
+      "right": {
+        "type": "Literal",
+        "value": name,
+        "raw": "'" + name + "'"
       }
-    }
-  });
+    };
+  },
+  __instance: function(args, options){
+    var name = args[0];
+    var sid = options.sid;
 
-  return escodegen.generate(result, {
-    format: {
-      indent: {
-        adjustMultilineComment: true
-      }
-    },
-    comment: true
-  });
-};
-
-
-function __module_id(id){
-  return {
-    "type": "Literal",
-    "value": id,
-    "raw": "'" + id + "'"
-  };
-}
-
-function __class(sid, name){
-  return {
-    "type": "Literal",
-    "value": '.' + (sid ? sid + '-' : '') + name,
-    "raw": "'." + (sid ? sid + '-' : '') + name + "'"
-  };
-}
-
-function __id(sid, name){
-  return {
-    "type": "BinaryExpression",
-    "operator": "+",
-    "left": {
+    var ast = {
       "type": "BinaryExpression",
       "operator": "+",
       "left": {
         "type": "Literal",
-        "value": '#' + (sid ? sid + '-' : ''),
-        "raw": "'#" + (sid ? sid + '-' : '') + "'"
+        "value": sid,
+        "raw": "'" + sid + "'"
       },
       "right": {
         "type": "ConditionalExpression",
@@ -104,13 +91,13 @@ function __id(sid, name){
           "type": "BinaryExpression",
           "operator": "+",
           "left": {
-            "type": "Identifier",
-            "name": "instance"
-          },
-          "right": {
             "type": "Literal",
             "value": "-",
             "raw": "'-'"
+          },
+          "right": {
+            "type": "Identifier",
+            "name": "instance"
           }
         },
         "alternate": {
@@ -119,71 +106,58 @@ function __id(sid, name){
           "raw": "''"
         }
       }
-    },
-    "right": {
-      "type": "Literal",
-      "value": name,
-      "raw": "'" + name + "'"
-    }
-  };
-}
+    };
 
-function __instance(sid, name){
-  var ast = {
-    "type": "BinaryExpression",
-    "operator": "+",
-    "left": {
-      "type": "Literal",
-      "value": sid,
-      "raw": "'" + sid + "'"
-    },
-    "right": {
-      "type": "ConditionalExpression",
-      "test": {
-        "type": "Identifier",
-        "name": "instance"
-      },
-      "consequent": {
+    if(name){
+      return {
         "type": "BinaryExpression",
         "operator": "+",
-        "left": {
+        "left": ast,
+        "right":{
           "type": "Literal",
-          "value": "-",
-          "raw": "'-'"
-        },
-        "right": {
-          "type": "Identifier",
-          "name": "instance"
+          "value": '-' + name,
+          "raw": "'" + "-" + name + "'"
         }
-      },
-      "alternate": {
-        "type": "Literal",
-        "value": "",
-        "raw": "''"
       }
+    }else{
+      return ast;
     }
-  };
-
-  if(name){
-    return {
-      "type": "BinaryExpression",
-      "operator": "+",
-      "left": ast,
-      "right":{
-        "type": "Literal",
-        "value": '-' + name,
-        "raw": "'" + "-" + name + "'"
-      }
-    }
-  }else{
-    return ast;
   }
-}
+};
 
-function __transform(result){
-  return {
-    "type": "Literal",
-    "value": result,
-    "raw": "'" + result + "'"
-  };
-}
+module.exports = function(options){
+  var _entry = options.entry || [];
+  var _require = options.require || [];
+  var _external = options.external || [];
+
+  var func_list = Object.create(default_func);
+
+  if(typeof options.func === 'object'){
+    Object.keys(options.func).forEach(function(func_name){
+      func_list[func_name] = function(args, opt){
+        var result = options.func[func_name](args, opt);
+
+        return {
+          "type": "Literal",
+          "value": result,
+          "raw": "'" + result + "'"
+        };
+      };
+    });
+  }
+
+  var pack = new ScriptPack({
+    basedir: options.basedir,
+    func: func_list,
+    transform: options.transform || {}
+  });
+
+  pack.add(_entry);
+  pack.require(_require);
+  pack.external(_external);
+
+  return pack.bundle();
+};
+
+exports.Pack = ScriptPack;
+

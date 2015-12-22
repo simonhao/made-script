@@ -6,23 +6,14 @@
 
 'use strict';
 
-class Person{
-  constructor(){
+var net = require('base/net');
+var extend = require('base/extend');
+var tool = require('comm/tool');
 
-  }
-  update(){
 
-  }
-}
+extend();
 
-var class_name = __class('class');
-
-var instance = 'instance';
-
-var id = __id('id');
-
-var module_id = __module_id;
-
-var instance = __instance('');
-
-var src = __src('static/image');
+var id = __id('hash');
+var classname = __class('classname');
+var instance = __instance('instance');
+var src = __src('back.png');
