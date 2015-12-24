@@ -1,7 +1,7 @@
 {
   "name": "made-script",
-  "version": "0.2.1",
-  "description": "compile module entry script file",
+  "version": "0.3.0",
+  "description": "compile module and pack script",
   "main": "index.js",
   "scripts": {
     "test": "node ./test/index.js"
