@@ -36,7 +36,6 @@ function ScriptPack(options){
 ScriptPack.prototype = {
   constructor: ScriptPack,
   error: function(){
-
     console.error(Array.prototype.slice.call(arguments).join(''));
   },
   add: function(file){

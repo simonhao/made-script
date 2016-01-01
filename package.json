@@ -3,6 +3,7 @@
   "version": "0.3.0",
   "description": "compile module and pack script",
   "main": "index.js",
+  "browser": "runtime.js",
   "scripts": {
     "test": "node ./test/index.js"
   },
@@ -20,8 +21,8 @@
   },
   "homepage": "https://github.com/simonhao/made-script#readme",
   "dependencies": {
-    "escodegen": "^1.7.0",
-    "esprima": "^2.7.0",
+    "escodegen": "^1.7.1",
+    "esprima": "^2.7.1",
     "estraverse": "^4.1.1",
     "extend": "^3.0.0",
     "made-id": "^0.2.3"
