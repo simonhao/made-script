@@ -11,16 +11,18 @@ var fs       = require('fs');
 
 var filename = __dirname + '/test.js';
 var str      = fs.readFileSync(filename, 'utf-8');
+var options = {
+  basedir: __dirname,
+  with_dep: true,
+  transform:[function(node, parent, options){
+    if(node.type === 'CallExpression' && node.callee.name === '__class' && node.arguments.length === 1 && node.arguments[0].type === 'Literal'){
+      return node.arguments[0];
+    }
+  }]
+};
 
-var compiler = new Compiler(str, filename)
+var compiler = new Compiler(str, filename, options)
 
 var result = compiler.compile();
-
-console.log(result);
-
-var wrapfile = __dirname + '/../old/wrap.js';
-var wrap = fs.readFileSync(wrapfile, 'utf-8');
-
-result = wrap + '({test:function(require, module, exports){' + result + '}},[])';
 
 fs.writeFileSync(__dirname + '/test.compile.js', result);

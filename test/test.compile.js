@@ -1,57 +1,30 @@
 /**
- * Made Script Wrap
- * @author: SimonHao
- * @date:   2015-12-22 14:49:47
- */
-
-require = (function(modules, entry){
-
-  var prev_require = typeof require === 'function' && require;
-  var cache = {};
-
-  function new_require(module_id){
-    var module;
-
-    if(!cache[module_id]){
-      if(!modules[module_id]){
-        if(prev_require){
-          return prev_require(module_id);
-        }else{
-          throw new Error('Cannot find module \'' + module_id + '\'');
-        }
-      }else{
-        module = cache[module_id] = {exports:{}};
-        modules[module_id].call(module.exports, new_require, module, module.exports);
-      }
-    }
-
-    return cache[module_id].exports;
-  }
-
-  entry.forEach(function(module_id){
-    new_require(module_id);
-  });
-
-  return new_require;
-})({test:function(require, module, exports){/**
  * test
  * @author: SimonHao
  * @date:   2016-01-01 20:24:47
  */
 'use strict';
+var Module = require('made-module')._default;
+var MathLib = require('comm/math');
+var Max = require('comm/math').max, min = require('comm/math').min;
+var SyncModule = require('made-sync-module');
+var class_name = 'class_name';
 var Human = __made.create_class(function Human(name) {
+  this._name = name;
 }, [
   {
     say: {
       value: function () {
+        this._say = true;
         alert('human say');
       }
     }
   },
   {}
-]);
+], Module);
 var Person = __made.create_class(function Person(name, age) {
-  Human.call(this, name, age);
+  Human.call(this, name);
+  this._age = age;
 }, [
   {
     say: {
@@ -83,4 +56,4 @@ var Person = __made.create_class(function Person(name, age) {
     }
   }
 ], Human);
-exports._default = Person;}},[])
+exports._default = Person;
