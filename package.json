@@ -1,7 +1,7 @@
 {
   "name": "made-script",
-  "version": "0.3.0",
-  "description": "compile module and pack script",
+  "version": "0.3.1",
+  "description": "compile es6 module",
   "main": "index.js",
   "browser": "runtime.js",
   "scripts": {
@@ -25,6 +25,6 @@
     "esprima": "^2.7.1",
     "estraverse": "^4.1.1",
     "extend": "^3.0.0",
-    "made-id": "^0.2.3"
+    "made-id": "^0.3.0"
   }
 }
