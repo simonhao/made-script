@@ -3,7 +3,7 @@
   "version": "0.3.1",
   "description": "compile es6 module",
   "main": "index.js",
-  "browser": "runtime.js",
+  "browser": "browser.js",
   "scripts": {
     "test": "node ./test/index.js"
   },

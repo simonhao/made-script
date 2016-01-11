@@ -1,3 +1,4 @@
+var __made_script = require("made-script");
 /**
  * test
  * @author: SimonHao
@@ -8,8 +9,8 @@ var Module = require('made-module')._default;
 var MathLib = require('comm/math');
 var Max = require('comm/math').max, min = require('comm/math').min;
 var SyncModule = require('made-sync-module');
-var class_name = 'class_name';
-var Human = __made.create_class(function Human(name) {
+var class_name = '.test-class_name';
+var Human = __made_script.create_class(function Human(name) {
   this._name = name;
 }, [
   {
@@ -22,7 +23,7 @@ var Human = __made.create_class(function Human(name) {
   },
   {}
 ], Module);
-var Person = __made.create_class(function Person(name, age) {
+var Person = __made_script.create_class(function Person(name, age) {
   Human.call(this, name);
   this._age = age;
 }, [
