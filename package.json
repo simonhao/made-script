@@ -1,6 +1,6 @@
 {
   "name": "made-script",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "compile es6 module",
   "main": "index.js",
   "browser": "browser.js",
