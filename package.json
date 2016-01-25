@@ -1,9 +1,12 @@
 {
   "name": "made-script",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "compile es6 module",
   "main": "index.js",
   "browser": "browser.js",
+  "bin": {
+    "ms": "./bin/ms.js"
+  },
   "scripts": {
     "test": "node ./test/index.js"
   },
@@ -21,6 +24,7 @@
   },
   "homepage": "https://github.com/simonhao/made-script#readme",
   "dependencies": {
+    "commander": "^2.9.0",
     "escodegen": "^1.7.1",
     "esprima": "^2.7.1",
     "estraverse": "^4.1.1",
